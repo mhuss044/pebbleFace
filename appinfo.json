@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "mhuss044@gmail.com",
+    "longName": "testWatchFace",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "testWatchFace",
+    "uuid": "26ba2348-a9b1-4cad-a835-65c3fd0ad87e",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
