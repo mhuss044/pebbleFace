@@ -5,6 +5,9 @@ TextLayer *text_layer;
 
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
+	if(click_recognizer_is_repeating(recognizer))
+	{
+	}
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
@@ -14,11 +17,14 @@ static void select_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 }
 
+// Called every time window becomes visible
 static void click_config_provider(void *context)
 {
 	window_single_click_subscribe(BUTTON_ID_UP, up_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_DOWN, down_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_pressed);
+
+//	window_single_repeating_click_subscribe(), window_multi_click_subscribe(), window_long_click_subscribe()
 }
 
 void update_anim(void *data)
