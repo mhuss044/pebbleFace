@@ -3,14 +3,14 @@
 Window *window;
 TextLayer *text_layer;
 
-up_button_pressed(ClickRecognizerRef recognizer, void *context)
+static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 }
 
-down_button_pressed(ClickRecognizerRef recognizer, void *context)
+static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 }
-select_button_pressed(ClickRecognizerRef recognizer, void *context)
+static void select_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 }
 
