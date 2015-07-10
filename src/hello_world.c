@@ -21,7 +21,28 @@ static void click_config_provider(void *context)
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_pressed);
 }
 
-void handle_init(void) {
+void update_anim(void *data)
+{
+	// Draw:
+
+	app_timer_register(1000 / 30, update_animation, NULL);
+}
+
+static void window_load(Window *window) 
+{
+	// Run loop
+	update_anim(NULL);
+}
+
+static void window_appear(Window *window)
+{
+}	
+
+static void window_disappear(Window *window) 
+{
+}
+
+void init(void) {
 	// Create a window and text layer
 	window = window_create();
 	text_layer = text_layer_create(GRect(0, 0, 144, 154));
@@ -37,16 +58,26 @@ void handle_init(void) {
 
 	// Set up button handlers
 	window_set_click_config_provider(window, click_config_provider);
-
-
+	
 	// Push the window
 	window_stack_push(window, true);
 	
 	// App Logging!
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Just pushed a window!");
+
+	// Set window handlers
+	window_set_window_handlers(window, 
+			(WindowHandlers) 
+			{
+				.load = window_load,
+				.appear = window_appear,
+				.disappear = window_disappear,
+			});
 }
 
-void handle_deinit(void) {
+
+
+void deinit(void) {
 	// Destroy the text layer
 	text_layer_destroy(text_layer);
 	
@@ -56,7 +87,7 @@ void handle_deinit(void) {
 
 int main(void)
 {
-	handle_init();
+	init();
 	app_event_loop();
-	handle_deinit();
+	deinit();
 }
