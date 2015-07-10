@@ -1,0 +1,6 @@
+space ship game with digital clock at the top
+every 3 minutes gets to boss
+use the top and bottom buttons to fire top or bottom thrusters
+	but insure that thrusters never rotate further than the vertical
+shoot at incoming obstacles
+stars flying by in the background
