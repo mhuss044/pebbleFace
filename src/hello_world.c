@@ -17,7 +17,7 @@ static void select_button_pressed(ClickRecognizerRef recognizer, void *context)
 static void click_config_provider(void *context)
 {
 	window_single_click_subscribe(BUTTON_ID_UP, up_button_pressed);
-	window_single_click_subscribe(BUTTON_ID_UP, down_botton_pressed);
+	window_single_click_subscribe(BUTTON_ID_DOWN, down_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_pressed);
 }
 
