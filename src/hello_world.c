@@ -25,7 +25,8 @@ void update_anim(void *data)
 {
 	// Draw:
 
-	app_timer_register(1000 / 30, update_animation, NULL);
+	// Set timer for next draw
+	app_timer_register(1000 / 30, update_anim, NULL);
 }
 
 static void window_load(Window *window) 
