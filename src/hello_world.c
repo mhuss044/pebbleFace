@@ -75,7 +75,7 @@ void init(void) {
 
 
 	// Set up button handlers
-	window_set_click_config_provider(&window, click_config_provider);
+	window_set_click_config_provider(window, click_config_provider);
 	
 	// Push the window
 	window_stack_push(window, true);
