@@ -84,7 +84,7 @@ static void update_time(void)		// Called every tick by tick handler
 	*/
 
 	// Change the text in the time text layer
-	text_layer_set_text(time_text_layer, time_text);
+	text_layer_set_text(text_time_layer, time_text);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) 
