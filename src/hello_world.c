@@ -63,11 +63,6 @@ static void window_disappear(Window *window)
 {
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed) 
-{
-	update_time();
-}
-
 static void update_time(void)		// Called every tick by tick handler
 {
 	// Get a tm structure
@@ -75,7 +70,7 @@ static void update_time(void)		// Called every tick by tick handler
 	struct tm *tick_time = localtime(&temp);
 
 	// Write the current hours and minutes into the buffer
-	strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
+	strftime(time_text, sizeof("00:00"), "%H:%M", tick_time);
 
 	/*
 	// Write the current hours and minutes into the buffer
@@ -89,7 +84,12 @@ static void update_time(void)		// Called every tick by tick handler
 	*/
 
 	// Change the text in the time text layer
-	text_layer_set_text(time_time_layer, time_text);
+	text_layer_set_text(time_text_layer, time_text);
+}
+
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) 
+{
+	update_time();
 }
 
 void init(void) {
