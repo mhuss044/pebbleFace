@@ -18,13 +18,24 @@ static void select_button_pressed(ClickRecognizerRef recognizer, void *context)
 }
 
 // Called every time window becomes visible
-static void click_config_provider(void *context)
+static void click_config_provider(Window *window)
 {
 	window_single_click_subscribe(BUTTON_ID_UP, up_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_DOWN, down_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_pressed);
 
 //	window_single_repeating_click_subscribe(), window_multi_click_subscribe(), window_long_click_subscribe()
+/*
+	// single click / repeat-on-hold config:
+	window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+	window_single_repeating_click_subscribe(BUTTON_ID_SELECT, 1000, select_single_click_handler);
+
+	// multi click config:
+	window_multi_click_subscribe(BUTTON_ID_SELECT, 2, 10, 0, true, select_multi_click_handler);
+
+	// long click config:
+	window_long_click_subscribe(BUTTON_ID_SELECT, 700, select_long_click_handler, select_long_click_release_handler);
+*/
 }
 
 void update_anim(void *data)
@@ -64,7 +75,7 @@ void init(void) {
 
 
 	// Set up button handlers
-	window_set_click_config_provider(window, click_config_provider);
+	window_set_click_config_provider(&window, click_config_provider);
 	
 	// Push the window
 	window_stack_push(window, true);
