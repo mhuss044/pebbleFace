@@ -1,7 +1,8 @@
 #include <pebble.h>
 
 Window *window;
-TextLayer *text_layer;
+TextLayer *text_time_layer;
+static char time_text[] = "00:00";
 
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
@@ -64,32 +65,52 @@ static void window_disappear(Window *window)
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) 
 {
+	update_time();
+}
 
+static void update_time(void)		// Called every tick by tick handler
+{
+	// Get a tm structure
+	time_t temp = time(NULL); 
+	struct tm *tick_time = localtime(&temp);
+
+	// Write the current hours and minutes into the buffer
+	strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
+
+	/*
+	// Write the current hours and minutes into the buffer
+	if(clock_is_24h_style() == true) {
+	    // Use 24 hour format
+	    strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
+	      } else {
+			  // Use 12 hour format
+			  strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
+			    }
+	*/
+
+	// Change the text in the time text layer
+	text_layer_set_text(time_time_layer, time_text);
 }
 
 void init(void) {
 	// Create a window and text layer
 	window = window_create();
-	text_layer = text_layer_create(GRect(0, 0, 144, 154));
+	text_time_layer = text_layer_create(GRect(0, 0, 144, 154));
+	text_layer_set_background_color(text_time_layer, GColorWhite);
+	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
 	// Set the text, font, and text alignment
-	text_layer_set_text(text_layer, "fgwHi, I'm a Pebble!");
-	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
+	text_layer_set_text(text_time_layer, "00:00");
+	text_layer_set_font(text_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_text_alignment(text_time_layer, GTextAlignmentCenter);
 	
 	// Add the text layer to the window
-	layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_layer));
+	layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_time_layer));
 
 
 	// Set up button handlers
 	window_set_click_config_provider(window, click_config_provider);
 	
-	// Push the window
-	window_stack_push(window, true);
-	
-	// App Logging!
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "Just pushed a window!");
-
 	// Set window handlers
 	window_set_window_handlers(window, 
 			(WindowHandlers) 
@@ -100,13 +121,17 @@ void init(void) {
 			});
 	// Register with TickTimerService
 	tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+
+	// Push the window
+	window_stack_push(window, true);
+	
+	// App Logging!
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Just pushed a window!");
 }
-
-
 
 void deinit(void) {
 	// Destroy the text layer
-	text_layer_destroy(text_layer);
+	text_layer_destroy(text_time_layer);
 	
 	// Destroy the window
 	window_destroy(window);
