@@ -8,6 +8,8 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	if(click_recognizer_is_repeating(recognizer))
 	{
 	}
+
+	Window *window = (Window *)context;
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
@@ -60,6 +62,11 @@ static void window_disappear(Window *window)
 {
 }
 
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) 
+{
+
+}
+
 void init(void) {
 	// Create a window and text layer
 	window = window_create();
@@ -91,6 +98,8 @@ void init(void) {
 				.appear = window_appear,
 				.disappear = window_disappear,
 			});
+	// Register with TickTimerService
+	tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
 
