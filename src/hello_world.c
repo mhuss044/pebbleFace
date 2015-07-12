@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*
    watch face;
@@ -60,7 +61,7 @@ GPathInfo obstInfo[10] = {
 	.num_points = 6,
 	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
 	}
-}
+};
 
 static GPath *(obstacles[10]) = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 static int obstacleColour[10][3];
@@ -79,7 +80,7 @@ void setupObstGPath(int obst)
 	obstOffsetX[obst] = rand()%120+5;
 	obstOffsetY[obst] = 168;
 	obstRot[obst] = rand()%40+5;
-	obstacles[obst] = gpath_create(&obstInfo[x]);
+	obstacles[obst] = gpath_create(&obstInfo[obst]);
 }
 
 void updateObstPath(int obst)
@@ -107,6 +108,8 @@ void collisionDetect(void)
 			updateObstPath(x);
 			// Take damage:
 			vibes_long_pulse();
+			light_enable(true);	// Turn on light
+			light_enable_interaction();	// Shutoff light after a bit
 		}
 }
 
@@ -118,7 +121,6 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	}
 
 	Window *window = (Window *)context;
-	light_enable(true);
 	// Fire gun:
 	vibes_short_pulse();
 	// Translate 
@@ -175,6 +177,8 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	GRect bounds = layer_get_frame(layer);
 	// Draw:
 	// Draw obstacles
+	for(int x = 0; x < level; x++)
+	{
 #ifdef PLATFORM_APLITE
 	graphics_context_set_fill_color(ctx, GColorWhite);
 	gpath_draw_filled(ctx, obstacles[x]);
@@ -191,6 +195,7 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, obstacles[x]);
 #endif
+	}
 	// Draw shots
 	// Draw player
 	graphics_context_set_fill_color(ctx, GColorWhite);
