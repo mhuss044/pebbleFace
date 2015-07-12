@@ -222,8 +222,8 @@ void anim_loop(void *data)
 	for(int x = 0; x < level; x++)
 	{
 		obstRot[x] += 2;
-		if(obstOffsetY > 0)
-			obstOffsetY-=2;
+		if(obstOffsetY[x] > 0)
+			obstOffsetY[x]-=2;
 		else
 			updateObstPath(x);
 		gpath_rotate_to(obstacles[x], TRIG_MAX_ANGLE / 360 * obstRot[x]);
