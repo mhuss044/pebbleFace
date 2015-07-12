@@ -182,9 +182,9 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	graphics_context_set_fill_color(ctx, GColorWhite);
 	gpath_draw_filled(ctx, obstacles[x]);
 	// Stroke the path:
-	if(rand()%1)
-		graphics_context_set_stroke_color(ctx, GColorBlack);
-	else
+//	if(rand()%1)
+//		graphics_context_set_stroke_color(ctx, GColorBlack);
+i//	else
 		graphics_context_set_stroke_color(ctx, GColorWhite);
 	gpath_draw_outline(ctx, obstacles[x]);		
 #endif
