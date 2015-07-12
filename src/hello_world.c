@@ -17,7 +17,7 @@ static char time_text[] = "00:00";
 static GPath *player = NULL;
 static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
-	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	.points = (GPoint []) {{0, 0}, {10, 15}, {20, 20}, {5, 10}, {10, 14}, {0, 14}}
 };
 
 GPathInfo obstInfo[10] = {
@@ -95,7 +95,7 @@ void updateObstPath(int obst)
 void collisionDetect(void)
 {
 	for(int x = 0; x < level; x++)
-		if(sqrt(pow(playerOffsetX - obstOffsetX[x], 2)+pow(playerOffsetY - obstOffsetY[x], 2)) < 20)
+		if((playerOffsetX - obstOffsetX[x]) < 20 && (playerOffsetY - obstOffsetY[x] < 20)
 		{
 			if(healthBarWidth > 0)
 				healthBarWidth--;
