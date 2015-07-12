@@ -204,8 +204,9 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	// Stroke the path:
 	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, player);
-	
-	graphics_draw_circle(ctx, GPoint(120, 120), healthBarWidth);	
+
+	graphics_context_set_fill_color(ctx, GColorWhite);
+	graphics_fill_circle(ctx, GPoint(120, 120), healthBarWidth);	
 	/*
 	   make layer
 	   put polygon in layer
@@ -291,7 +292,7 @@ void init(void) {
 	window_set_fullscreen(window, true);				// Not available on Basalt
 #endif
 	// Create text layer
-	text_time_layer = text_layer_create(GRect(0, 140, 100, 15));
+	text_time_layer = text_layer_create(GRect(0, 160, 60, 165));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
