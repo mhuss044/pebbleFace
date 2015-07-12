@@ -106,7 +106,9 @@ void collisionDetect(void)
 			}
 			updateObstPath(x);
 			// Take damage:
-			vibes_long_pulse();
+	vibes_short_pulse();
+	
+	//		vibes_long_pulse();
 			light_enable(true);	// Turn on light
 			light_enable_interaction();	// Shutoff light after a bit
 		}
@@ -120,8 +122,6 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	}
 
 	Window *window = (Window *)context;
-	// Fire gun:
-	//vibes_short_pulse();
 	// Translate 
 	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
@@ -206,7 +206,7 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	gpath_draw_outline(ctx, player);
 
 	graphics_context_set_fill_color(ctx, GColorWhite);
-	graphics_fill_circle(ctx, GPoint(120, 120), healthBarWidth);	
+	graphics_fill_circle(ctx, GPoint(140, 150), healthBarWidth);	
 	/*
 	   make layer
 	   put polygon in layer
