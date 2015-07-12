@@ -102,7 +102,7 @@ void collisionDetect(void)
 			else
 			{
 				level = 1;
-				healthBarWidth = 100;
+				healthBarWidth = 20;
 			}
 			updateObstPath(x);
 			// Take damage:
@@ -292,7 +292,7 @@ void init(void) {
 	window_set_fullscreen(window, true);				// Not available on Basalt
 #endif
 	// Create text layer
-	text_time_layer = text_layer_create(GRect(0, 160, 100, 15));
+	text_time_layer = text_layer_create(GRect(0, 155, 80, 165));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
