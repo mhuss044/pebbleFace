@@ -1,5 +1,14 @@
 #include <pebble.h>
 
+/*
+   watch face;
+   	white on black, with face in center: sleeping, awake, drowsy
+	
+timeline shoot obstacles
+
+include weather
+	*/
+
 Window *window;
 TextLayer *text_time_layer;
 static char time_text[] = "00:00";
@@ -85,7 +94,7 @@ graphics_draw_text(ctx, "And text here as well.", fonts_get_system_font(FONT_KEY
 void anim_loop(void *data)
 {
 	// request redraw of layer
-	layerMarkDirty(mainLayer);
+	layer_mark_dirty(mainLayer);
 	// Set timer for next draw
 	app_timer_register(1000 / 30, anim_loop, NULL);
 }
@@ -153,7 +162,7 @@ void init(void) {
 	mainLayer = layer_create(windowBounds);
 	layer_set_update_proc(mainLayer, update_layer_callback);
 	// Add background layer to window
-	layer_add_child(window_Layer, mainLayer);
+	layer_add_child(window_get_root_layer(window), mainLayer);
 
 	player = gpath_create(&PLAYER_INFO);
 
