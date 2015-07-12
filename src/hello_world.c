@@ -17,7 +17,7 @@ static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
 	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
 };
-int playerOffsetX = 0, playerOffsetY = 0;
+int playerOffsetX = 0, playerOffsetY = 0, rot = 0;
 
 Layer *mainLayer;
 
@@ -34,7 +34,7 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	// Fire gun:
 	vibes_short_pulse();
 	// Rotate 15 degrees:
-	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
+//	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
 	// Translate 
 	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
@@ -57,6 +57,7 @@ static void click_config_provider(void *context)
 	window_single_click_subscribe(BUTTON_ID_UP, up_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_DOWN, down_button_pressed);
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_pressed);
+	window_single_repeating_click_subscribe(BUTTON_ID_UP, 1000, up_button_pressed);
 
 //	window_single_repeating_click_subscribe(), window_multi_click_subscribe(), window_long_click_subscribe()
 /*
