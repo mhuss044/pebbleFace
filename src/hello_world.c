@@ -3,6 +3,13 @@
 Window *window;
 TextLayer *text_time_layer;
 static char time_text[] = "00:00";
+static GPath *player = NULL;
+static const GPathInfo PLAYER_INFO = {
+	.num_points = 6,
+	.points = (GPoint []) {{21, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+};
+
+Layer *mainLayer;
 
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
@@ -11,6 +18,15 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	}
 
 	Window *window = (Window *)context;
+	light_enable(true);
+	// Take damage:
+	vibes_long_pulse();
+	// Fire gun:
+	vibes_short_pulse();
+	// Rotate 15 degrees:
+	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
+	// Translate by (5, 5):
+	gpath_move_to(player, GPoint(5, 5));
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
@@ -41,18 +57,43 @@ static void click_config_provider(void *context)
 */
 }
 
-void update_anim(void *data)
+static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by makeDirty
 {
+	GRect bounds = layer_get_frame(layer);
 	// Draw:
+	// Draw obstacles
+	// Draw shots
+	// Draw player
+	graphics_context_set_fill_color(ctx, GColorWhite);
+	gpath_draw_filled(ctx, player);
+	// Stroke the path:
+	graphics_context_set_stroke_color(ctx, GColorBlack);
+	gpath_draw_outline(ctx, player);
+		
+	/*
+	   make layer
+	   put polygon in layer
+	   mark layer as dirty in loop func, so that sys calls update_my_layer routine
+	   */
+/*	
+graphics_context_set_text_color(ctx, GColorBlack);
+graphics_draw_text(ctx, "Text here.", fonts_get_system_font(FONT_KEY_FONT_FALLBACK), GRect(5, 5, bounds.size.w - 10, 100), GTextOverflowModeWordWrap, GTextAlignmentLeft, NULL);
+graphics_draw_text(ctx, "And text here as well.", fonts_get_system_font(FONT_KEY_FONT_FALLBACK), GRect(90, 100, bounds.size.w - 95, 60), GTextOverflowModeWordWrap, GTextAlignmentRight, NULL);
+*/
+}
 
+void anim_loop(void *data)
+{
+	// request redraw of layer
+	layerMarkDirty(mainLayer);
 	// Set timer for next draw
-	app_timer_register(1000 / 30, update_anim, NULL);
+	app_timer_register(1000 / 30, anim_loop, NULL);
 }
 
 static void window_load(Window *window) 
 {
 	// Run loop
-	update_anim(NULL);
+	anim_loop(NULL);
 }
 
 static void window_appear(Window *window)
@@ -93,8 +134,11 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 }
 
 void init(void) {
-	// Create a window and text layer
+	// Create a window 
 	window = window_create();
+	window_set_background_color(window, GGColorBlack);
+	window_set_fullscreen(window, true);				// Not available on Basalt
+	// Create text layer
 	text_time_layer = text_layer_create(GRect(0, 0, 144, 154));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
@@ -103,10 +147,23 @@ void init(void) {
 	text_layer_set_text(text_time_layer, "00:00");
 	text_layer_set_font(text_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
 	text_layer_set_text_alignment(text_time_layer, GTextAlignmentCenter);
+
+	// Create main drawing layer
+	Layer *window_Layer = window_get_root_layer(window);
+	GRect windowBounds = layer_get_frame(window_layer);
+	mainLayer = layer_create(windowBounds);
+	layer_set_update_proc(mainLayer, update_layer_callback);
+	// Add background layer to window
+	layer_add_child(window_layer, mainLayer);
+
+	player = gpath_create(&PLAYER_INFO);
+
 	
+	// Add obstacle layer to window
+	// Add shots layer to window
+	// Add character layer to window
 	// Add the text layer to the window
 	layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_time_layer));
-
 
 	// Set up button handlers
 	window_set_click_config_provider(window, click_config_provider);
@@ -132,6 +189,9 @@ void init(void) {
 void deinit(void) {
 	// Destroy the text layer
 	text_layer_destroy(text_time_layer);
+
+	layer_destroy(mainLayer);
+	  
 	
 	// Destroy the window
 	window_destroy(window);
