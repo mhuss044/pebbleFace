@@ -204,7 +204,8 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	// Stroke the path:
 	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, player);
-		
+	
+	graphics_draw_circle(ctx, GPoint(120, 120), healthBarWidth);	
 	/*
 	   make layer
 	   put polygon in layer
