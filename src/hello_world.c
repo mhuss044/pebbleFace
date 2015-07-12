@@ -189,7 +189,8 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 		graphics_context_set_stroke_color(ctx, GColorWhite);
 	gpath_draw_outline(ctx, obstacles[x]);		
 #else
-	graphics_context_set_fill_color(ctx, GColorFromRGB(obstacleColour[0][0], obstacleColour[1][0], obstacleColour[2][0]));
+	GColor colour = GColorFromRGB(obstacleColour[0][0], obstacleColour[1][0], obstacleColour[2][0]);
+	graphics_context_set_fill_color(ctx, colour);
 	gpath_draw_filled(ctx, obstacles[x]);
 	// Stroke the path:
 	graphics_context_set_stroke_color(ctx, GColorBlack);
