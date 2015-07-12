@@ -15,7 +15,7 @@ static char time_text[] = "00:00";
 static GPath *player = NULL;
 static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
-	.points = (GPoint []) {{21, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
 };
 
 Layer *mainLayer;
