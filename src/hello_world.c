@@ -136,7 +136,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 void init(void) {
 	// Create a window 
 	window = window_create();
-	window_set_background_color(window, GGColorBlack);
+	window_set_background_color(window, GColorBlack);
 	window_set_fullscreen(window, true);				// Not available on Basalt
 	// Create text layer
 	text_time_layer = text_layer_create(GRect(0, 0, 144, 154));
@@ -149,12 +149,11 @@ void init(void) {
 	text_layer_set_text_alignment(text_time_layer, GTextAlignmentCenter);
 
 	// Create main drawing layer
-	Layer *window_Layer = window_get_root_layer(window);
-	GRect windowBounds = layer_get_frame(window_layer);
+	GRect windowBounds = layer_get_frame(window_get_root_layer(window));
 	mainLayer = layer_create(windowBounds);
 	layer_set_update_proc(mainLayer, update_layer_callback);
 	// Add background layer to window
-	layer_add_child(window_layer, mainLayer);
+	layer_add_child(window_Layer, mainLayer);
 
 	player = gpath_create(&PLAYER_INFO);
 
