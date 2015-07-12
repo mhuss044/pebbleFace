@@ -290,7 +290,7 @@ void init(void) {
 	window_set_fullscreen(window, true);				// Not available on Basalt
 #endif
 	// Create text layer
-	text_time_layer = text_layer_create(GRect(80, 0, 100, 15));
+	text_time_layer = text_layer_create(GRect(0, 140, healthBarWidth, 15));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
