@@ -95,7 +95,7 @@ void updateObstPath(int obst)
 void collisionDetect(void)
 {
 	for(int x = 0; x < level; x++)
-		if((playerOffsetX - obstOffsetX[x]) < 20 && (playerOffsetY - obstOffsetY[x]) < 40)
+		if((playerOffsetX - obstOffsetX[x]) < 40 && (playerOffsetY - obstOffsetY[x]) < 40)
 		{
 			if(healthBarWidth > 0)
 				healthBarWidth--;
