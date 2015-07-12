@@ -92,7 +92,6 @@ void updateObstPath(int obst)
 	}
 }
 
-/*
 void collisionDetect(void)
 {
 	for(int x = 0; x < level; x++)
@@ -112,7 +111,7 @@ void collisionDetect(void)
 			light_enable_interaction();	// Shutoff light after a bit
 		}
 }
-*/
+
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 	if(click_recognizer_is_repeating(recognizer))
@@ -122,7 +121,7 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 
 	Window *window = (Window *)context;
 	// Fire gun:
-	vibes_short_pulse();
+	//vibes_short_pulse();
 	// Translate 
 	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
@@ -233,7 +232,7 @@ void anim_loop(void *data)
 		playerOffsetX++;
 		gpath_move_to(obstacles[x], GPoint(obstOffsetX[x], obstOffsetY[x]));
 	}
-//	collisionDetect();
+	collisionDetect();
 	// request redraw of layer
 	layer_mark_dirty(mainLayer);
 	// Set timer for next draw
