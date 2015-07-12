@@ -126,9 +126,9 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 
-	if(playerOffsetX >= 144)
+	if(playerOffsetX >= 130)
 	{
-		playerOffsetX = 5;
+		playerOffsetX = 15;
 		if(level < 10)
 			level++;
 	}
