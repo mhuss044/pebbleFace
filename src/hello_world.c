@@ -146,7 +146,7 @@ void init(void) {
 	// Create a window 
 	window = window_create();
 	window_set_background_color(window, GColorBlack);
-	window_set_fullscreen(window, true);				// Not available on Basalt
+//	window_set_fullscreen(window, true);				// Not available on Basalt
 	// Create text layer
 	text_time_layer = text_layer_create(GRect(0, 0, 144, 154));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
