@@ -109,6 +109,23 @@ void collisionDetect(void)
 			vibes_long_pulse();
 			light_enable(true);	// Turn on light
 			light_enable_interaction();	// Shutoff light after a bit
+
+	// Destroy the text layer
+	text_layer_destroy(text_time_layer);
+
+
+	// Create text layer
+		text_time_layer = text_layer_create(GRect(0, 140, healthBarWidth, 15));
+		text_layer_set_background_color(text_time_layer, GColorWhite);
+		text_layer_set_text_color(text_time_layer, GColorBlack);
+			// Set the text, font, and text alignment
+	text_layer_set_text(text_time_layer, "00:00");
+	text_layer_set_font(text_time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+	text_layer_set_text_alignment(text_time_layer, GTextAlignmentCenter);
+
+
+	layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_time_layer));
+
 		}
 }
 
