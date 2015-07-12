@@ -17,6 +17,7 @@ static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
 	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
 };
+int playerOffsetX = 0, playerOffsetY = 0;
 
 Layer *mainLayer;
 
@@ -35,7 +36,7 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	// Rotate 15 degrees:
 	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
 	// Translate by (5, 5):
-	gpath_move_to(player, GPoint(5, 5));
+	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
@@ -148,7 +149,7 @@ void init(void) {
 	window_set_background_color(window, GColorBlack);
 //	window_set_fullscreen(window, true);				// Not available on Basalt
 	// Create text layer
-	text_time_layer = text_layer_create(GRect(0, 0, 144, 10));
+	text_time_layer = text_layer_create(GRect(0, 0, 144, 15));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
