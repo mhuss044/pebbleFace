@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include <stdlib.h>
 
 /*
    watch face;
@@ -17,31 +18,127 @@ static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
 	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
 };
-int playerOffsetX = 0, playerOffsetY = 0, rot = 0;
+
+GPathInfo obstInfo[10] = {
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	},
+	{
+	.num_points = 6,
+	.points = (GPoint []) {{0, 0}, {14, 26}, {28, 26}, {7, 60}, {14, 34}, {0, 34}}
+	}
+}
+
+static GPath *(obstacles[10]) = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+static int obstacleColour[10][3];
+int playerOffsetX = 0, playerOffsetY = 0, obstRot[10], level = 1, healthBarWidth = 100;
+int obstOffsetX[10] = {0,0,0,0,0,0,0,0,0,0};
+int obstOffsetY[10] = {0,0,0,0,0,0,0,0,0,0};
 
 Layer *mainLayer;
+
+void setupObstGPath(int obst)
+{
+	obstInfo[obst].num_points = rand()%6+3;
+	obstacleColour[obst][0] = rand()%244+1;
+	obstacleColour[obst][1] = rand()%244+1;
+	obstacleColour[obst][2] = rand()%244+1;
+	obstOffsetX[obst] = rand()%120+5;
+	obstOffsetY[obst] = 168;
+	obstRot[obst] = rand()%40+5;
+	obstacles[obst] = gpath_create(&obstInfo[x]);
+}
+
+void updateObstPath(int obst)
+{
+	if(obstacles[obst] != NULL)
+	{
+		gpath_destroy(obstacles[obst]);
+		setupObstGPath(obst);
+	}
+}
+
+
+void collisionDetect(void)
+{
+	for(int x = 0; x < level; x++)
+		if(sqrt(pow(playerOffsetX - obstOffsetX[x], 2)+pow(playerOffsetY - obstOffsetY[x], 2)) < 20)
+		{
+			if(healthBarWidth > 0)
+				healthBarWidth--;
+			else
+			{
+				level = 1;
+				healthBarWidth = 100;
+			}
+			updateObstPath(x);
+			// Take damage:
+			vibes_long_pulse();
+		}
+}
 
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 	if(click_recognizer_is_repeating(recognizer))
 	{
+		playerOffsetX+=2;
 	}
 
 	Window *window = (Window *)context;
 	light_enable(true);
-	// Take damage:
-	vibes_long_pulse();
 	// Fire gun:
 	vibes_short_pulse();
-	// Rotate 15 degrees:
-//	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
 	// Translate 
 	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
+
+	if(playerOffsetX >= 144)
+	{
+		playerOffsetX = 5;
+		if(level < 10)
+			level++;
+	}
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
+	if(click_recognizer_is_repeating(recognizer))
+	{
+		playerOffsetX-=2;
+	}
 	// Translate 
 	playerOffsetX--;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
@@ -78,6 +175,22 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	GRect bounds = layer_get_frame(layer);
 	// Draw:
 	// Draw obstacles
+#ifdef PLATFORM_APLITE
+	graphics_context_set_fill_color(ctx, GColorWhite);
+	gpath_draw_filled(ctx, obstacles[x]);
+	// Stroke the path:
+	if(rand()%1)
+		graphics_context_set_stroke_color(ctx, GColorBlack);
+	else
+		graphics_context_set_stroke_color(ctx, GColorWhite);
+	gpath_draw_outline(ctx, obstacles[x]);		
+#else
+	graphics_context_set_fill_color(ctx, GColorFromRGB(obstacleColour[0][0], obstacleColour[1][0], obstacleColour[2][0]));
+	gpath_draw_filled(ctx, obstacles[x]);
+	// Stroke the path:
+	graphics_context_set_stroke_color(ctx, GColorBlack);
+	gpath_draw_outline(ctx, obstacles[x]);
+#endif
 	// Draw shots
 	// Draw player
 	graphics_context_set_fill_color(ctx, GColorWhite);
@@ -100,6 +213,20 @@ graphics_draw_text(ctx, "And text here as well.", fonts_get_system_font(FONT_KEY
 
 void anim_loop(void *data)
 {
+	// Move obstacles
+	for(int x = 0; x < level; x++)
+	{
+		obstRot[x] += 2;
+		if(obstOffsetY > 0)
+			obstOffsetY-=2;
+		else
+			updateObstPath(x);
+		gpath_rotate_to(obstacles[x], TRIG_MAX_ANGLE / 360 * obstRot[x]);
+		// Translate 
+		playerOffsetX++;
+		gpath_move_to(obstacles[x], GPoint(obstOffsetX[x], obstOffsetY[x]));
+	}
+	collisionDetect();
 	// request redraw of layer
 	layer_mark_dirty(mainLayer);
 	// Set timer for next draw
@@ -153,9 +280,11 @@ void init(void) {
 	// Create a window 
 	window = window_create();
 	window_set_background_color(window, GColorBlack);
-//	window_set_fullscreen(window, true);				// Not available on Basalt
+#ifdef PLATFORM_APLITE
+	window_set_fullscreen(window, true);				// Not available on Basalt
+#endif
 	// Create text layer
-	text_time_layer = text_layer_create(GRect(0, 0, 144, 15));
+	text_time_layer = text_layer_create(GRect(80, 0, 100, 15));
 	text_layer_set_background_color(text_time_layer, GColorWhite);
 	text_layer_set_text_color(text_time_layer, GColorBlack);
 	
@@ -171,8 +300,10 @@ void init(void) {
 	// Add background layer to window
 	layer_add_child(window_get_root_layer(window), mainLayer);
 
+	// Setup player&obstacle paths
 	player = gpath_create(&PLAYER_INFO);
-
+	for(int x = 0; x < 10; x++)
+		setupObstGPath(x);
 	
 	// Add obstacle layer to window
 	// Add shots layer to window
@@ -201,12 +332,16 @@ void init(void) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Just pushed a window!");
 }
 
-void deinit(void) {
+void deinit(void) 
+{
 	// Destroy the text layer
 	text_layer_destroy(text_time_layer);
 
+	// Destroy paths
+	gpath_destroy(player);
+	for(int x = 0; x < 10; x++)
+		gpath_destroy(obstacles[x]);
 	layer_destroy(mainLayer);
-	  
 	
 	// Destroy the window
 	window_destroy(window);
