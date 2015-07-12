@@ -35,13 +35,18 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 	vibes_short_pulse();
 	// Rotate 15 degrees:
 	gpath_rotate_to(player, TRIG_MAX_ANGLE / 360 * 15);
-	// Translate by (5, 5):
+	// Translate 
+	playerOffsetX++;
 	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
+	// Translate 
+	playerOffsetX--;
+	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 }
+
 static void select_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 }
