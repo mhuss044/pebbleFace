@@ -232,6 +232,7 @@ void anim_loop(void *data)
 			updateObstPath(x);
 		gpath_rotate_to(obstacles[x], TRIG_MAX_ANGLE / 360 * obstRot[x]);
 		// Translate 
+		playerOffsetX++;
 		gpath_move_to(obstacles[x], GPoint(obstOffsetX[x], obstOffsetY[x]));
 	}
 	collisionDetect();
