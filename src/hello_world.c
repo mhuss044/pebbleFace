@@ -17,7 +17,7 @@ static char time_text[] = "00:00";
 static GPath *player = NULL;
 static const GPathInfo PLAYER_INFO = {
 	.num_points = 6,
-	.points = (GPoint []) {{0, 0}, {40, 0}, {40, 10}, {20, 10}, {25, 20}, {20, 20}}
+	.points = (GPoint []) {{0, 0}, {30, 0}, {30, 10}, {20, 10}, {25, 20}, {20, 20}}
 };
 
 GPathInfo obstInfo[10] = {
