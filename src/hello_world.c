@@ -65,7 +65,7 @@ GPathInfo obstInfo[10] = {
 
 static GPath *(obstacles[10]) = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 int obstacleColour[10][3];
-int playerOffsetX = 0, playerOffsetY = 0, obstRot[10], level = 1, healthBarWidth = 100;
+int playerOffsetX = 0, playerOffsetY = 0, obstRot[10], level = 1, healthBarWidth = 20;
 int obstOffsetX[10] = {0,0,0,0,0,0,0,0,0,0};
 int obstOffsetY[10] = {0,0,0,0,0,0,0,0,0,0};
 
