@@ -118,13 +118,12 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 {
 	if(click_recognizer_is_repeating(recognizer))
 	{
-		playerOffsetX+=2;
+//		playerOffsetX+=2;
 	}
 
 	Window *window = (Window *)context;
 	// Translate 
 	playerOffsetX++;
-	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 
 	if(playerOffsetX >= 130)
 	{
@@ -132,6 +131,8 @@ static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
 		if(level < 10)
 			level++;
 	}
+
+	gpath_move_to(player, GPoint(playerOffsetX, playerOffsetY));
 }
 
 static void down_button_pressed(ClickRecognizerRef recognizer, void *context)
