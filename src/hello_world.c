@@ -188,7 +188,7 @@ static void update_layer_callback(Layer *layer, GContext *ctx)	// Called by make
 	else
 		graphics_context_set_stroke_color(ctx, GColorWhite);
 	gpath_draw_outline(ctx, obstacles[x]);		
-#else
+#ifdef PBL_COLOR
 	GColor colour = GColorFromRGB(obstacleColour[x][0], obstacleColour[x][1], obstacleColour[x][2]);
 	graphics_context_set_fill_color(ctx, colour);
 	gpath_draw_filled(ctx, obstacles[x]);
