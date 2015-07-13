@@ -95,23 +95,24 @@ void updateObstPath(int obst)
 void collisionDetect(void)
 {
 	for(int x = 0; x < level; x++)
-		if((playerOffsetX - obstOffsetX[x]) < 40 && (playerOffsetY - obstOffsetY[x]) < 40)
-		{
-			if(healthBarWidth > 0)
-				healthBarWidth--;
-			else
+		if((playerOffsetX > (obstOffsetX[x] - 10)) && (playerOffsetX < (obstOffsetX[x] + 10)))
+			if((playerOffsetY > (obstOffsetY[obst] - 10)) && (playerOffsetY < (obstOffsetY[obst] + 10)))
 			{
-				level = 1;
-				healthBarWidth = 20;
+				if(healthBarWidth > 0)
+					healthBarWidth--;
+				else
+				{
+					level = 1;
+					healthBarWidth = 20;
+				}
+				updateObstPath(x);
+				// Take damage:
+				vibes_short_pulse();
+		
+		//		vibes_long_pulse();
+				light_enable(true);	// Turn on light
+				light_enable_interaction();	// Shutoff light after a bit
 			}
-			updateObstPath(x);
-			// Take damage:
-	vibes_short_pulse();
-	
-	//		vibes_long_pulse();
-			light_enable(true);	// Turn on light
-			light_enable_interaction();	// Shutoff light after a bit
-		}
 }
 
 static void up_button_pressed(ClickRecognizerRef recognizer, void *context)
@@ -235,7 +236,7 @@ void anim_loop(void *data)
 		playerOffsetX++;
 		gpath_move_to(obstacles[x], GPoint(obstOffsetX[x], obstOffsetY[x]));
 	}
-//	collisionDetect();
+	collisionDetect();
 	// request redraw of layer
 	layer_mark_dirty(mainLayer);
 	// Set timer for next draw
