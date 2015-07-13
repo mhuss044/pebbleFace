@@ -65,7 +65,7 @@ GPathInfo obstInfo[10] = {
 
 static GPath *(obstacles[10]) = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 int obstacleColour[10][3];
-int playerOffsetX = 0, playerOffsetY = 0, obstRot[10], level = 10, healthBarWidth = 20;
+int playerOffsetX = 0, playerOffsetY = 0, obstRot[10], level = 1, healthBarWidth = 20;
 int obstOffsetX[10] = {0,0,0,0,0,0,0,0,0,0};
 int obstOffsetY[10] = {0,0,0,0,0,0,0,0,0,0};
 
@@ -235,7 +235,7 @@ void anim_loop(void *data)
 		playerOffsetX++;
 		gpath_move_to(obstacles[x], GPoint(obstOffsetX[x], obstOffsetY[x]));
 	}
-	collisionDetect();
+//	collisionDetect();
 	// request redraw of layer
 	layer_mark_dirty(mainLayer);
 	// Set timer for next draw
