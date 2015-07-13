@@ -96,7 +96,7 @@ void collisionDetect(void)
 {
 	for(int x = 0; x < level; x++)
 		if((playerOffsetX > (obstOffsetX[x] - 10)) && (playerOffsetX < (obstOffsetX[x] + 10)))
-			if((playerOffsetY > (obstOffsetY[obst] - 10)) && (playerOffsetY < (obstOffsetY[obst] + 10)))
+			if((playerOffsetY > (obstOffsetY[x] - 10)) && (playerOffsetY < (obstOffsetY[x] + 10)))
 			{
 				if(healthBarWidth > 0)
 					healthBarWidth--;
